@@ -8,6 +8,7 @@ const path = require("path");
 // const mailer = require('./misc/mailer')
 
 const mongoose = require("mongoose");
+require('dotenv').config();
 
 const app = express();
 
@@ -28,7 +29,7 @@ app.use(express.json());
 
 // mongoose uri
 
-const db =  "mongodb://elesarr:elesarr@crowdfunding-shard-00-00-xbka6.mongodb.net:27017,crowdfunding-shard-00-01-xbka6.mongodb.net:27017,crowdfunding-shard-00-02-xbka6.mongodb.net:27017/test?ssl=true&replicaSet=crowdFunding-shard-0&authSource=admin&retryWrites=true&w=majority";
+const db =  process.env.DB_CONN;
 
 // Connect to mongoose
 console.log(db)

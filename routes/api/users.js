@@ -1,5 +1,6 @@
 
 const express = require("express")
+require('dotenv').config();
 const router = express.Router();
 const nodemailer = require("nodemailer");
 
@@ -8,11 +9,12 @@ const User = require("../../model/user")
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'emmanuelsumeh@gmail.com',
-      pass: 'Loaded888'
+      user: process.env.USER,
+      pass: process.env.PASS
     }
   });
 
+  console.log(transporter)
 
   
 
@@ -37,41 +39,43 @@ router.post("/", (req, res) => {
         console.log("line 37", user)
   
       if (user) return res.status(400).json({ msg: "User already exists" });
+      else{
+        const newUser = new User({
+       
+          user :{
+            email
+            
+          }
   
-      const newUser = new User({
+         
        
-        user :{
-          email
+  
+  
           
-        }
-
-       
-     
-
-
-        
-      });
-      var mailOptions = {
-        from: 'emmanuelsumeh@gmail.com',
-        to:    `${newUser.user.email}`,
-        subject: 'Thank You For Signing Up',
-        text: 'You have successfully signed up with elesar'
-      };
-
-      console.log("new user ", newUser.user.email)
-
-newUser.save().then(
-    user => {
-       
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-              console.log(error);
-            } else {
-              console.log('Email sent: ' + info.response);
-            }
-          });
-    }
-)
+        });
+        var mailOptions = {
+        ''  from: 'emmanuelsumeh@gmail.com',
+          to:    `${newUser.user.email}`,
+          subject: 'Thank You For Signing Up',
+          text: 'You have successfully signed up with elesar'
+        };
+  
+        console.log("new user ", newUser.user.email)
+  
+  newUser.save().then(
+      user => {
+         
+            transporter.sendMail(mailOptions, function(error, info){
+              if (error) {
+                console.log(error);
+              } else {
+                res.status(200).json({successful : user})
+              }
+            });
+      }
+  )
+      }
+ 
 // .then(
 //     res => {
 //         res.status(200).json({msg : "registered successfully"})
